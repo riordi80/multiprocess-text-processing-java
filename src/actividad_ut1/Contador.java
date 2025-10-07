@@ -76,7 +76,8 @@ public class Contador {
     }
 
     /**
-     * Uso: Contador <ruta-archivo>
+     * Uso: {@code Contador <ruta-archivo>}
+     * @param args {@code args[0]} es la ruta al fichero de entrada
      */
     public static void main(String[] args) {
         if (args.length == 0) {

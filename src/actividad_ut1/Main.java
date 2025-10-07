@@ -6,16 +6,20 @@ import java.io.FileReader;
 import java.io.InputStreamReader;
 
 /**
- * Proceso padre: lanza un hijo por fichero datosX.txt (en src/data),
- * espera su finalización y muestra un informe por fichero leyendo .res.
+ * Proceso padre: lanza un hijo por fichero datosX.txt (en src/data), espera su
+ * finalización y muestra un informe por fichero leyendo .res.
  */
 public class Main {
 
-    /** Lee un entero desde un fichero .res; devuelve 0 si hay problema. */
+    /**
+     * Lee un entero desde un fichero .res; devuelve 0 si hay problema.
+     */
     private static int leerEntero(String ruta) {
         try (BufferedReader br = new BufferedReader(new FileReader(ruta))) {
             String s = br.readLine();
-            if (s == null) return 0;
+            if (s == null) {
+                return 0;
+            }
             s = s.trim();
             return Integer.parseInt(s);
         } catch (Exception e) {
@@ -24,6 +28,12 @@ public class Main {
         }
     }
 
+    /**
+     * Punto de entrada.
+     *
+     * @param args no usado
+     * @throws Exception si falla el lanzamiento/espera de procesos
+     */
     public static void main(String[] args) throws Exception {
         // Base relativa al directorio desde el que ejecutas (raíz del proyecto)
         String sep = File.separator;
@@ -60,26 +70,26 @@ public class Main {
 
             int exit = p.waitFor();
             if (exit != 0) {
-                System.err.println("ATENCIÓN: Hijo datos" + i + ".txt terminó con código " + exit +
-                        ". Puede que falten .res o estén incompletos.");
+                System.err.println("ATENCIÓN: Hijo datos" + i + ".txt terminó con código " + exit
+                        + ". Puede que falten .res o estén incompletos.");
             } else {
                 System.out.println("Hijo datos" + i + ".txt finalizado correctamente.");
             }
 
             // Carpeta donde están los .res (misma que el .txt)
             String carpeta = new File(archivo).getParent();
-            String vocalesRes  = carpeta + sep + "vocales-"  + sufijo + ".res";
+            String vocalesRes = carpeta + sep + "vocales-" + sufijo + ".res";
             String palabrasRes = carpeta + sep + "palabras-" + sufijo + ".res";
 
-            int totalVocales  = leerEntero(vocalesRes);
+            int totalVocales = leerEntero(vocalesRes);
             int totalPalabras = leerEntero(palabrasRes);
-            double promedio   = (totalPalabras > 0) ? (double) totalVocales / totalPalabras : 0.0;
+            double promedio = (totalPalabras > 0) ? (double) totalVocales / totalPalabras : 0.0;
 
             // Informe por fichero
             System.out.println("=== Informe datos" + sufijo + ".txt ===");
             System.out.println("Palabras procesadas: " + totalPalabras);
             System.out.println("Total de vocales:    " + totalVocales);
-            System.out.printf ("Promedio vocales/palabra: %.3f%n", promedio);
+            System.out.printf("Promedio vocales/palabra: %.3f%n", promedio);
         }
     }
 }
